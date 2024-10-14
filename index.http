@@ -1,0 +1,29 @@
+POST http://localhost:3000/api/comercio
+Content-Type: application/json
+
+{
+  "nombre": "La Polleria",
+  "cif": "12345CIF",
+  "direccion": "czll",
+  "email": "ddddd@zzzz.com",
+  "telefono": "123456789",
+  "idPagina": 1
+}
+
+POST http://localhost:3000/api/comercio
+Content-Type: application/json
+
+{
+  "nombre": "Panaderia la Perra",
+  "cif": "3235CIF",
+  "direccion": "afuera",
+  "email": "daaaaad@zzzz.com",
+  "telefono": "cksdc",
+  "idPagina": 2
+}
+
+GET http://localhost:3000/api/comercio
+
+GET http://localhost:3000/api/comercio/12345CIF
+
+
