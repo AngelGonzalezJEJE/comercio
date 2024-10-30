@@ -1,0 +1,140 @@
+### Registro de Ususario
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Max Powers",
+  "email": "maxpow@gmail.com",
+  "password": "123456789",
+  "edad": 44,
+  "ciudad": "Springfield"
+}
+
+### Registro de usuario
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "perra",
+  "email": "sexo@gmail.com",
+  "password": "123456789",
+  "edad": 44,
+  "ciudad": "Springfield",
+  "intereses": ["xxx","Prostitution"],
+  "permiteRecibirOfertas":"true"
+}
+
+### Login, devuelve token del usuario
+POST http://localhost:3000/api/auth/login 
+Content-Type: application/json
+
+{
+  "email":"maxpow@gmail.com", 
+  "password":"123456789" 
+}
+### Para crear el usuario admin
+POST http://localhost:3000/api/usuarios HTTP/1.1
+Content-Type: application/json
+
+{
+  "nombre":"Armando el sidoso",
+  "email":"arsido@gmail.com",
+  "password": "123456789",
+  "edad": 21,
+  "ciudad": "Kukux",
+  "role":"admin"
+}
+
+### Login del usuario "admin"
+POST http://localhost:3000/api/auth/login 
+Content-Type: application/json
+
+{
+  "email":"arsido@gmail.com", 
+  "password":"123456789" 
+}
+
+### Eliminar "user" prueba con otro usuario (error si no tiene el rol admin)
+DELETE http://localhost:3000/api/usuarios/671e9e0ce554d2772d6bebab
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzFlYTlmNDU4ZjFjYzQzYjQyOTYwZmYiLCJpYXQiOjE3MzAwNjI4ODcsImV4cCI6MTczMDE0OTI4N30.2ImUeV3PsJBMPY3yxV7_LzYtPQYp4rMt1kbueQMOnE4
+
+### Eliminar "user" 
+DELETE http://localhost:3000/api/usuarios/67227ab3292b9454b73051e3?physical=true
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzIyN2FiMzI5MmI5NDU0YjczMDUxZTMiLCJpYXQiOjE3MzAzMTI4ODgsImV4cCI6MTc2MTg0ODg4OH0.XlzVFlw8toVzfj4VEL43UdpDlGCxaidxOJCvUsMKMo0
+
+### crear un comercio por ADMIN
+POST http://localhost:3000/api/comercio
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzIxNDg3M2MwMjI0ODFlMjc3MzcxMzMiLCJpYXQiOjE3MzAzMjczMjYsImV4cCI6MTc2MTg2MzMyNn0.7KbEi_lfudjHXpIufbOdRxGH8OM-p6L7zhShZe4xYrU
+
+{
+  "nombre": "hola",
+  "cif": "staroossss",
+  "direccion": "tumadre",
+  "email": "yyyyy@xxx.com",
+  "telefono": "123456789",
+  "idpagina":123
+}
+
+### Creacion de una pagina web
+POST http://localhost:3000/api/paginaWeb HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzIyYjMzMTIwODczOTkzNzRkZTlkNTkiLCJpYXQiOjE3MzAzMjczNDUsImV4cCI6MTc2MTg2MzM0NX0.ZRG21CpexUd3gvse3i-iWZLivmBvWc-TmNjrjJ6Vess
+
+{
+  "ciudad": "Mxxx",
+  "actividad": "xxx",
+  "titulo": "Txxx",
+  "resumen": "A brief summary of the best tourist spots in Madrid.",
+  "textos": [
+    "Madrid is the capital city of Spain.",
+    "It is known for its cultural and artistic heritage."
+  ],
+  "imagenes": [
+    "https://example.com/images/madrid1.jpg",
+    "https://example.com/images/madrid2.jpg"
+  ],
+  "reseñas": {
+    "scoring": 4.5,
+    "totalPuntuaciones": 150,
+    "comentarios": [
+      "Amazing experience!",
+      "A must-see when visiting Madrid."
+    ]
+  }
+}
+### Actualizacion de una pagina web por su id
+PUT http://localhost:3000/api/paginaWeb/6720b21b76c538b1c3b6000b HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzFmYTI4NjVmY2M4N2M5MGJjN2U1YWYiLCJpYXQiOjE3MzAxMjY0NzAsImV4cCI6MTc2MTY2MjQ3MH0.SgRGFMXaD3YRd18DzSnXnNoiJblu3dEBngNIaUh9NP0
+
+{
+  "ciudad": "Barinas",
+  "actividad": "Prostitution"
+}
+
+### Sube una imagen al docuemento y la almacena en el servidor / storage
+PATCH  http://localhost:3000/api/paginaWeb/img HTTP/1.1
+Content-Type: multipart/form-data; boundary=Boundary
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzIyYjMzMTIwODczOTkzNzRkZTlkNTkiLCJpYXQiOjE3MzAzMjczNDUsImV4cCI6MTc2MTg2MzM0NX0.ZRG21CpexUd3gvse3i-iWZLivmBvWc-TmNjrjJ6Vess
+
+--Boundary
+Content-Disposition: form-data; name="image"; filename="img.jpg"
+Content-Type: image/jpg
+
+< C:\Users\angel\Downloads\princess.jpg
+--Boundary
+Content-Disposition: form-data; name="textos"
+
+hola amigas espero pronto ganar dinero con esto dios
+--Boundary--
+### DELETE de una pagina web por su id
+DELETE http://localhost:3000/api/paginaWeb/671fb0db87c4c52ba84abaea/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzFmYTI4NjVmY2M4N2M5MGJjN2U1YWYiLCJpYXQiOjE3MzAxMjY0NzAsImV4cCI6MTc2MTY2MjQ3MH0.SgRGFMXaD3YRd18DzSnXnNoiJblu3dEBngNIaUh9NP0 HTTP/1.1
+
+
+### GET INTERESADOS, array de emails de ususarios que tengan la actividad de la pagina web dentro de su array de intereses(si permite recibir ofertas)
+GET http://localhost:3000/api/comercio/interesados HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzIyYjMzMTIwODczOTkzNzRkZTlkNTkiLCJpYXQiOjE3MzAzMjczNDUsImV4cCI6MTc2MTg2MzM0NX0.ZRG21CpexUd3gvse3i-iWZLivmBvWc-TmNjrjJ6Vess
+
+
+

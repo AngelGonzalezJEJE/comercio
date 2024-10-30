@@ -10,6 +10,7 @@ fs.readdirSync(__dirname).filter((file) => {
     const name = removeExtension(file);
     if (name !== "index") {
         const route = require("./" + name);  // Importa el archivo de ruta
+        console.log(`Loading route '${name}':`, typeof route);
         
         // Verifica que lo que exporta sea una función de middleware
         if (typeof route === 'function' || typeof route === 'object') {

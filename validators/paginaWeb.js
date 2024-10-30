@@ -15,11 +15,6 @@ const validatorcrearPaginaWeb = [
     check('titulo').exists().notEmpty(),
     check('resumen').exists().notEmpty().optional(),
     check('textos').exists().notEmpty().optional(),
-    check('imagenes').exists().notEmpty().optional(),
-    check('reseñas').exists().notEmpty().optional(),
-    check('reseñas.scoring').exists().notEmpty().optional(),
-    check('reseñas.totalPuntuaciones').exists().notEmpty().optional(),
-    check('reseñas.comentarios').exists().notEmpty().optional(),
     (req, res, next) => validateResults(req, res, next)
 ];
 
@@ -31,10 +26,6 @@ const validatorModificarPaginaWeb = [
   check('resumen').exists().notEmpty().optional(),
   check('textos').exists().notEmpty().optional(),
   check('imagenes').exists().notEmpty().optional(),
-  check('reseñas').exists().notEmpty().optional(),
-  check('reseñas.scoring').exists().notEmpty().optional(),
-  check('reseñas.totalPuntuaciones').exists().notEmpty().optional(),
-  check('reseñas.comentarios').exists().notEmpty().optional(),
 (req, res, next) => validateResults(req, res, next)
 ];
 
@@ -46,7 +37,7 @@ const validatorBorrarPaginaWeb =[
 
 //valida id
 const validatorCrearImagen = [
-  check("id").exists().notEmpty().isMongoId(),
+  check("textos").exists().notEmpty().optional(),
   (req, res, next) => validateResults(req, res, next)
 ]
 

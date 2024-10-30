@@ -42,7 +42,11 @@ const paginaWebSchema = new mongoose.Schema({
     },
     comentarios: {
       type: [String]  // Array de textos de las reseñas
-    }
+    },
+  },
+  cif:{ 
+    type: String,
+    unique: true
   }
 });
 

@@ -1,0 +1,38 @@
+### crear un comercio
+POST http://localhost:3000/api/comercio
+Content-Type: application/json
+
+{
+  "nombre": "La Polleria",
+  "cif": "12345CIF",
+  "direccion": "czll",
+  "email": "ddddd@zzzz.com",
+  "telefono": "123456789",
+  "idpagina":2112
+}
+### creo otro comercio
+POST http://localhost:3000/api/comercio
+Content-Type: application/json
+
+{
+  "nombre": "Panaderia la Perra",
+  "cif": "3235CIF",
+  "direccion": "afuera",
+  "email": "daaaaad@zzzz.com",
+  "telefono": "cksdc",
+  "idpagina": 2
+}
+### GET comercio por cif
+DELETE http://localhost:3000/api/comercio/staroossss?physical=true
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzIxNDg3M2MwMjI0ODFlMjc3MzcxMzMiLCJpYXQiOjE3MzAzMTczOTgsImV4cCI6MTc2MTg1MzM5OH0.eEweLRYqAsJ89XWiGZyI7u76unN0qiB9Y2Lnrm66C5c
+
+
+### trae todos los comercion es la base de datos
+GET http://localhost:3000/api/comercio
+### borra comercio por CIF soft delete
+DELETE http://localhost:3000/api/comercio/12345CIF
+### borra comercio por cif hard delete
+DELETE http://localhost:3000/api/comercio/12345CIF?physical=true
+
+
+

@@ -18,7 +18,6 @@ const validatorCrearComercio = [
 
 const validatorActualizarComercioPorCif = [
   check('nombre').exists().notEmpty().optional(),
-  check("cif").exists().notEmpty(),
   check('direccion').exists().notEmpty().optional(),
   check('email').exists().notEmpty().optional(),
   check('telefono').exists().notEmpty().optional(),

@@ -1,7 +1,11 @@
 const express = require('express')
-const paginaWebModel = require('../models/NoSql/paginaWeb')//se llama al modelo de  pagina Web
+const {comercioModel} = require('../models')//se llama al modelo de comercio
+const {paginaWebModel}= require("../models")
+const {userModel} = require("../models")
 const { matchedData } = require('express-validator')
 const { handleHttpError } = require('../utils/handleError')
+const {checkToken} = require("../utils/handleJwt")
+
 const fs = require("fs")
 
 //se obtiene la pagina web por el id en el parametro, si hay algun error lo devuelve
@@ -22,11 +26,17 @@ const paginaWebPorId = async (req,res) => {
 //crear una documento para los datos de una pagina web
 const crearPaginaWeb = async (req,res) => {
   try{
+    const comercioid = await checkToken(req,res)
+    const comercio = await comercioModel.findById(comercioid)
+    const cif = comercio.cif
+
     const body = matchedData(req) //se toman y se validan todos los campos de la solicitud (body)
+    body.cif = cif
     const data = await paginaWebModel.create(body)//si todo esta correcto se crea el documento
-  res.send(data)//se retorna el documento creado
+    res.send(data)//se retorna el documento creado
   }
   catch (error){
+    console.log(error)
     handleHttpError(res, 'ERROR_CREATE_PAGE', 500)//error interno
   }
 };
@@ -47,11 +57,11 @@ const modificarPaginaWeb = async (req, res) => {
   }
 };
 
-//borra un documento de la base de datos por su id
+//borra un documento de la base de datos por si concicde con el cif del comercio
 const borrarPaginaWeb = async (req,res) => {
   const {id} =  matchedData(req)//se toma y se valida la id de la solicitud
   try{
-    let data;//
+    let data;
     if (req.query.physical ==="true"){//physical indica si la eliminacion es fisica (Hard Delete)
       const data = await paginaWebModel.deleteOne({_id:id})//deleteOne borra el documento permanentemente si ?physical=true
       res.json({menasje:"pagina web eliminada permanentemente"})//confirmacion de eliminacion
@@ -62,17 +72,20 @@ const borrarPaginaWeb = async (req,res) => {
     }
   }
   catch (error){
+    console.log(error)
     rehandleHttpError(res, 'ERROR_DELETE_PAGE', 500)//error interno
   }
 };
 
 const crearImagen = async (req, res) => {
-  // Access the file from req.file
+  // tomo la imagen de req.file
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }
   const { filename } = req.file; // se almacena el nombre del archivo
-  const { id } = req.params; // ID de la pagina en  la url 
+  const { comercio } = req; // ID de la pagina en  la url 
+  const cif  = comercio.cif
+  const {textos} = req.body //texto a enviar 
   // para guardar los datos de la imagen (nombre y url)
   const fileData = {
     filename: filename,
@@ -80,20 +93,23 @@ const crearImagen = async (req, res) => {
   };
   try {
     // se ecuentra el documeto por su id y se actualiza el array de imagenes
-    const pagina_act = await paginaWebModel.findByIdAndUpdate(
-      id,
+    const pagina_act = await paginaWebModel.findOneAndUpdate(
+      ({cif:cif}),
       { $push: { imagenes: fileData.url } }, //anade el objeto completo
-      { new: true } // retorna el campo actualizado
+      {textos: {$each: textos}},//$each en caso de pasar un array
+      { new: true } // retorna los campos actualizado
     );
 
     if (!pagina_act) {// si no existe la pagina
       return res.status(404).json({ error: "no encontrado" });
     }
-    res.status(200).json({ message: "Imagen subida correctamente", fileData });//confirmacion de subida de imagen
+    res.status(200).json({ message: "Imagen subida correctamente", fileData, textos });//confirmacion de subida de imagen
   } catch (error) {
     console.error(error);
     handleHttpError(res, 'ERROR_UPLOAD_IMAGE', 500);//error interno
   }
 };
+
+
 
 module.exports= {paginaWebPorId,crearPaginaWeb, modificarPaginaWeb,borrarPaginaWeb,crearImagen}//exportacion
