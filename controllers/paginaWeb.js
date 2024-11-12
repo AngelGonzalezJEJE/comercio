@@ -8,9 +8,32 @@ const {checkToken} = require("../utils/handleJwt")
 
 const fs = require("fs")
 
+const getAllWeb = async (req,res) => {
+  try{
+    const query = {}
+      if (req.query.ciudad){
+        query.ciudad = req.query.ciudad
+      }
+      if (req.query.actividad){
+        query.actividad = req.query.actividad
+      }
+    let sortOption={}
+      if (req.query.scoring === "true")
+      {sortOption= {"reseñas.scoring": -1}}
+    console.log(req.query)
+    const data = await paginaWebModel.find(query).sort(sortOption)
+    res.json(data)
+  }
+  catch(error){
+    console.error(error)
+    handleHttpError(res, "ERROR_GET_USERS]", 500)
+  }
+};
+
+
 //se obtiene la pagina web por el id en el parametro, si hay algun error lo devuelve
 const paginaWebPorId = async (req,res) => {
-  const {id} = matchedData(req) // se toma el id de la url y se valida con mached data
+  const id = req.params.id // se toma el id de la url y se valida con mached data
   try{
     const data = await paginaWebModel.findById(id) // se busca el documento por su id
     if (!data) {
@@ -112,4 +135,4 @@ const crearImagen = async (req, res) => {
 
 
 
-module.exports= {paginaWebPorId,crearPaginaWeb, modificarPaginaWeb,borrarPaginaWeb,crearImagen}//exportacion
+module.exports= {getAllWeb,paginaWebPorId,crearPaginaWeb, modificarPaginaWeb,borrarPaginaWeb,crearImagen}//exportacioniu

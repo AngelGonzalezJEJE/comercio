@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const mongooseDelete = require("mongoose-delete")//modulo para habilitar hard y soft delete
+const mongooseDelete = require("mongoose-delete"); // Module for soft delete
 
-// Definir el esquema para el modelo del comercio
+// Define the schema for the "Comercio" model
 const paginaWebSchema = new mongoose.Schema({
   ciudad: {
     type: String,
@@ -19,14 +19,14 @@ const paginaWebSchema = new mongoose.Schema({
     type: String
   },
   textos: {
-    type: [String],  // Array de textos
+    type: [String],  // Array of texts
   },
   imagenes: {
-    type: [String],  // Array de URLs de imágenes o rutas a las fotos
+    type: [String],  // Array of image URLs or paths
     required: true,
     validate: {
       validator: (req) => {
-          return true; //TODO crear patrón
+        return true; // TODO: Create validation pattern
       },
       message: "ERROR_URL",
     }
@@ -36,21 +36,25 @@ const paginaWebSchema = new mongoose.Schema({
       type: Number,
       min: 0,
       max: 5,
+      default:0,
     },
     totalPuntuaciones: {
       type: Number
     },
     comentarios: {
-      type: [String]  // Array de textos de las reseñas
+      type: [String]  // Array of review texts
     },
   },
-  cif:{ 
+  cif: { 
     type: String,
     unique: true
   }
 });
 
-// Crear el modelo de Comercio a partir del esquema
-paginaWebSchema.plugin(mongooseDelete, {overrideMethods: "all"})//hard y soft delete
-module.exports = mongoose.model('paginaWeb', paginaWebSchema);
 
+
+// Add plugins for soft and hard delete
+paginaWebSchema.plugin(mongooseDelete, { overrideMethods: "all" });
+
+// Export the model
+module.exports = mongoose.model('PaginaWeb', paginaWebSchema);

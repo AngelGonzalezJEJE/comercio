@@ -89,16 +89,13 @@ const borrarComercio = async (req,res) => {
 const getEmailInteresados = async (req, res) => {
   const { comercio } = req; // Extract the comercio object from the request
   const cif = comercio.cif;
-
   try {  
-      // Find the webpage associated with the given CIF
       const paginaWeb = await paginaWebModel.findOne({ cif:cif });
 
-      // If no webpage is found, send an error response
+
       if (!paginaWeb) {
           return res.status(404).send("ERROR_UNDEFINED_PAGINAWEB"); // Use status code 404 for not found
       }
-
       const actividad = paginaWeb.actividad;
 
       // Find users interested in the activity

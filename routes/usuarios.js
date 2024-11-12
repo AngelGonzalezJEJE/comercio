@@ -15,7 +15,7 @@ const {
 } = require("../validators/users");
 
 const { authMiddleware } = require("../middleware/session");
-const { checkRol } = require("../middleware/role");
+const checkRol  = require("../middleware/role");
 const router = express.Router();
 
 /**

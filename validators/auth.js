@@ -23,4 +23,13 @@ const validatorUserRegister =[
   }
 ]
 
-module.exports = {validatorUserLogin,validatorUserRegister}
+const validatorAnonUser = [
+  check("intereses").exists().notEmpty(),
+  check("ciudad").exists().notEmpty(),
+  check("permiteRecibirOfertas").exists().notEmpty().optional(),
+  (req,res,next) => {
+    return validateResults(req,res,next)
+  }
+]
+
+module.exports = {validatorUserLogin,validatorUserRegister,validatorAnonUser}

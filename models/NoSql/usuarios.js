@@ -6,11 +6,9 @@ const Schema = mongoose.Schema;
 const usuarioSchema = new Schema({
     nombre: {
         type: String,
-        required: true
-    },
+        required: true},
     email: {
         type: String,
-        required: true,
         unique: true
     },
     password: {
@@ -19,12 +17,11 @@ const usuarioSchema = new Schema({
     },
     edad: {
         type: Number,
-        min: 0,  // Asegurarse de que la edad no sea negativa
-        required: true
+        min: 0  // Asegurarse de que la edad no sea negativa
+
     },
     ciudad: {
-        type: String,
-        required: true
+        type: String
     },
     intereses: {
         type: [String],  // Un array de intereses, cada uno de ellos como string

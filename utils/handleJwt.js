@@ -8,8 +8,14 @@ const tokenSing = (data) => {
     JWT,
     {expiresIn:"365d"}//uso este sing para todos 
   )
+  
   return sing
 };
+
+const tokenAnon = (data) => {
+  const token = jwt.sign(data,JWT,{expiresIn:"24h"})
+  return token
+}
 
 const verifyToken = (tokenJwt) => {
   try{
@@ -38,4 +44,4 @@ const checkToken = async (req,res,next) => {
 
 
 
-module.exports = {tokenSing,verifyToken, checkToken}
+module.exports = {tokenSing,verifyToken, checkToken, tokenAnon}

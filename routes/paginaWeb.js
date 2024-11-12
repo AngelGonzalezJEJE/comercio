@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const uploadMiddleware = require("../utils/handleStorage");
 const { authMiddlewareComercio, authMiddleware } = require("../middleware/session");
-const { checkRol } = require("../middleware/role");
+const checkRol  = require("../middleware/role");
 const pgwController = require("../controllers/paginaWeb");
 const {
   validatorBorrarPaginaWeb,
@@ -11,6 +11,9 @@ const {
   validatorpaginaWebPorId,
   validatorCrearImagen
 } = require("../validators/paginaWeb");
+
+router.get("/" ,authMiddleware, pgwController.getAllWeb)
+
 
 /**
  * @swagger

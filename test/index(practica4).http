@@ -1,0 +1,12 @@
+POST http://localhost:3000/api/auth/register/anon
+Content-Type: application/json
+
+{
+  "ciudad": "Caracas",
+  "intereses": ["xxx"],
+  "permiteRecibirOfertas": "true"
+}
+
+###
+GET http://localhost:3000/api/paginaWeb
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzIxNDg3M2MwMjI0ODFlMjc3MzcxMzMiLCJpYXQiOjE3MzEzNTE1NjAsImV4cCI6MTc2Mjg4NzU2MH0.eHL2ew0kwcSgiRjObM8_b59wmInte8NKPHGs8Yc2CJo

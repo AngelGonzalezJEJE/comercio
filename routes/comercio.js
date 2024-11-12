@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const {authMiddleware,authMiddlewareComercio} = require("../middleware/session");
+const  checkRol  = require("../middleware/role");
 const controllerCom = require("../controllers/comercio");
 const {
   validatorActualizarComercioPorCif,
@@ -7,10 +9,34 @@ const {
   validatorCrearComercio,
   validatorBorrarComercioPorCif
 } = require("../validators/comercio");
-const {authMiddleware,authMiddlewareComercio} = require("../middleware/session");
-const { checkRol } = require("../middleware/role");
+
 
 // Define the routes for CRUD operations
+/**
+ * @swagger
+ * /api/comercio/interesados:
+ *   get:
+ *     summary: Get emails of interested users for a specific page
+ *     tags: [Comercio]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of interested users' emails
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ *                 example: user@example.com
+ *       403:
+ *         description: Forbidden, user does not have permission
+ *       404:
+ *         description: Page not found
+ */
+router.get('/inter', authMiddlewareComercio, controllerCom.getEmailInteresados);
+
 
 /**
  * @swagger
@@ -163,31 +189,6 @@ router.delete('/:cif', validatorBorrarComercioPorCif, authMiddleware,checkRol, c
  */
 router.put('/:cif', validatorActualizarComercioPorCif, authMiddleware,checkRol, controllerCom.actualizarComercioCif);
 
-
-/**
- * @swagger
- * /api/comercio/interesados:
- *   get:
- *     summary: Get emails of interested users for a specific page
- *     tags: [Comercio]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: List of interested users' emails
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: string
- *                 example: user@example.com
- *       403:
- *         description: Forbidden, user does not have permission
- *       404:
- *         description: Page not found
- */
-router.get('/interesados', authMiddlewareComercio, controllerCom.getEmailInteresados);
 
 
 module.exports = router; // Export to be used in app.js

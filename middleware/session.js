@@ -1,5 +1,5 @@
 const { handleHttpError } = require("../utils/handleError");
-const { checkToken } = require("../utils/handleJwt");
+const { checkToken, verifyToken, tokenAnon } = require("../utils/handleJwt");
 // import modelos para obtener los datos necesarios para las autorizaciones 
 const { userModel } = require("../models");
 const { comercioModel } = require("../models");
@@ -13,8 +13,17 @@ const authMiddleware = async (req, res, next) => {
       handleHttpError(res, "NOT_TOKEN", 401); // maneja el error si no hay token
       return;
     }
+   
+    const token = req.headers.authorization?.split(" ")[1]
+    const tokenData = verifyToken(token)
+    console.log(tokenData)
 
-    // obtiene el id del usuario del token
+    if(tokenData){
+      req.user = { anon: true, ciudad: tokenData.ciudad, intereses: tokenData.intereses, role:tokenData.role }
+    
+    }
+    
+    else{
     const userId = await checkToken(req, res);
     
     // verifica si se obtuvo el id del token
@@ -26,9 +35,11 @@ const authMiddleware = async (req, res, next) => {
     // busca el usuario en la base de datos por su id
     const user = await userModel.findById(userId);
     req.user = user; // asigna el usuario encontrado al objeto de solicitud
+  }
 
     next(); // llama al siguiente middleware o manejador de ruta
   } catch (err) {
+    console.error(err)
     handleHttpError(res, "NOT_SESSION", 401); // maneja errores de sesión
   }
 };
@@ -60,23 +71,19 @@ const authMiddlewareComercio = async (req, res, next) => {
     if (req.params.id) {
       const webId = req.params.id; // obtiene el id de la página web de los parámetros de la URL
       const paginaWeb = await paginaWebModel.findById(webId); // busca la página web en la base de datos
-
-
-      // verifica si se encontró la página web
-      if (!paginaWeb) {
-        handleHttpError(res, "PAGINA_WEB_NOT_FOUND", 404); // maneja el error si no se encuentra la página web
-        return;
-      }
-
-      // compara los CIFs del comercio y la página web
-      if (comercio.cif !== paginaWeb.cif) {
-        handleHttpError(res, "NOT_ALLOWED", 403); // maneja el error si los CIFs no coinciden
-        return;
-      }
-
-      // si los CIFs coinciden, asigna la página web encontrada al objeto de solicitud
-      req.paginaWeb = paginaWeb;
-    }
+          // verifica si se encontró la página web
+          if (!paginaWeb) {
+            handleHttpError(res, "PAGINA_WEB_NOT_FOUND", 404); // maneja el error si no se encuentra la página web
+            return;
+          }
+          // compara los CIFs del comercio y la página web
+          if (comercio.cif !== paginaWeb.cif) {
+            handleHttpError(res, "NOT_ALLOWED", 403); // maneja el error si los CIFs no coinciden
+            return;
+          }
+          // si los CIFs coinciden, asigna la página web encontrada al objeto de solicitud
+          req.paginaWeb = paginaWeb;
+    };
 
     // continúa al siguiente middleware o manejador de ruta
     next();

@@ -1,6 +1,6 @@
 const express = require("express")
 const {handleHttpError} = require("../utils/handleError")
-const {tokenSing} = require("../utils/handleJwt")
+const {tokenSing,tokenAnon} = require("../utils/handleJwt")
 const { encrypt, compare} = require("../utils/handlePassword")
 const {matchedData}= require("express-validator")
 const {userModel} = require("../models")
@@ -26,6 +26,23 @@ catch (error) {
 }
 };
 
+const anonUser = async (req,res) => {
+  try{
+  reqData = matchedData(req)
+  const {intereses,ciudad,permiteRecibirOfertas} = reqData
+  const dataUser = {'anon':true,intereses,ciudad,"role":'user'}
+  const data = {
+    token: tokenAnon(dataUser),
+    AnonUser: dataUser
+  }
+  res.send(data)
+  }
+  catch(error){
+    console.log(error)
+    handleHttpError(res, "ERROR ANON USER")
+  }
+};
+
 //loging del usuario
 const userLogin = async (req,res) => {
   try{
@@ -36,7 +53,7 @@ const userLogin = async (req,res) => {
       handleHttpError(res, "USER_NOT_EXISTS",404)
       return
     }
-    //se toma la contrasena hasheada del ususario
+    //se toma la contrasena hasheada del usuario
     const hashPassword = user.password;
     //se compara la contrasena del usuario con el hash almacenado 
     //combrueba que  el hash de la contrasena 
@@ -63,4 +80,4 @@ const userLogin = async (req,res) => {
 
 //crear comercio por el admin
 
-module.exports = {userLogin,userRegister};
+module.exports = {userLogin,userRegister,anonUser};

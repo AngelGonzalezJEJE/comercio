@@ -8,6 +8,13 @@ const {userModel} = require("../models")
 //si es user, el parametro debe ser su propia id para que que se le de paso
 const checkRol = async (req, res, next) => { // Doble argumento
   try {
+
+    if (req.user.anon === true){
+      console.log(req.user)
+      userRol = req.user.role
+
+    }
+    else{
       const userId = await  checkToken(req,res)
       const user = await userModel.findById(userId)
       const queryId = req.params.id
@@ -18,10 +25,12 @@ const checkRol = async (req, res, next) => { // Doble argumento
           handleHttpError(res, "NOT_ALLOWED", 403)
           return
       }
+    }
       next()
   } catch (err) {
-      handleHttpError(res, "ERROR_PERMISSIONS", 403)
+    console.log(err)
+      handleHttpError(res, "ERROR_PERMISSIONSROL", 403)
   }
 };
 
-module.exports= {checkRol}
+module.exports= checkRol
