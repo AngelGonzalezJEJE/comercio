@@ -6,7 +6,6 @@ const comercioSchema = new mongoose.Schema({  //definicion de esquema de usuario
     direccion: {type:String},
     email: {type:String},
     telefono: {type:String},
-    idpagina: {type:Number},
 })
 
 comercioSchema.plugin(mongooseDelete, {overrideMethods: "all"})

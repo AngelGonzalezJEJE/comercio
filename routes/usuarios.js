@@ -4,7 +4,8 @@ const {
   getUsuarios,
   actualizarUsuario,
   deleteUsuario,
-  crearUsuario
+  crearUsuario,
+  rateWebSite
 } = require("../controllers/usuarios");
 
 const {
@@ -17,6 +18,8 @@ const {
 const { authMiddleware } = require("../middleware/session");
 const checkRol  = require("../middleware/role");
 const router = express.Router();
+
+router.patch("/rate/:id",authMiddleware,rateWebSite)
 
 /**
  * @swagger
@@ -32,7 +35,7 @@ const router = express.Router();
  *       403:
  *         description: Forbidden, authorization required
  */
-router.get("/", authMiddleware, getUsuarios);
+router.get("/", authMiddleware,checkRol(["admin"]), getUsuarios);
 
 /**
  * @swagger
@@ -76,7 +79,7 @@ router.get("/", authMiddleware, getUsuarios);
  *       404:
  *         description: User not found
  */
-router.get("/:id", validatorGetUsuario, getUsuario);
+router.get("/:id", validatorGetUsuario,checkRol(['admin']), getUsuario);
 
 /**
  * @swagger
@@ -121,7 +124,7 @@ router.get("/:id", validatorGetUsuario, getUsuario);
  *       400:
  *         description: Invalid input
  */
-router.post("/", validatorCrearUsuario, crearUsuario);
+router.post("/", validatorCrearUsuario, crearUsuario);//only used once to create an admin user 
 
 /**
  * @swagger
@@ -168,7 +171,7 @@ router.post("/", validatorCrearUsuario, crearUsuario);
  *       404:
  *         description: User not found
  */
-router.put("/:id", validatorActualizarUsuario, actualizarUsuario);
+router.put("/:id", validatorActualizarUsuario,checkRol(["user","admin"]), actualizarUsuario);
 
 /**
  * @swagger
@@ -191,6 +194,8 @@ router.put("/:id", validatorActualizarUsuario, actualizarUsuario);
  *       404:
  *         description: User not found
  */
-router.delete("/:id", validatorDeleteUsuario, authMiddleware, checkRol, deleteUsuario);
+router.delete("/:id", validatorDeleteUsuario, authMiddleware, checkRol(["user","admin"]), deleteUsuario);
+
+
 
 module.exports = router;

@@ -26,29 +26,13 @@ catch (error) {
 }
 };
 
-const anonUser = async (req,res) => {
-  try{
-  reqData = matchedData(req)
-  const {intereses,ciudad,permiteRecibirOfertas} = reqData
-  const dataUser = {'anon':true,intereses,ciudad,"role":'user'}
-  const data = {
-    token: tokenAnon(dataUser),
-    AnonUser: dataUser
-  }
-  res.send(data)
-  }
-  catch(error){
-    console.log(error)
-    handleHttpError(res, "ERROR ANON USER")
-  }
-};
 
 //loging del usuario
 const userLogin = async (req,res) => {
   try{
     req=matchedData(req) //validacion de los datos
     //se encuentra al usuario por su email
-    const user = await userModel.findOne({email:req.email}).select("password nombre role email")
+    const user = await userModel.findOne({email:req.email}).select("password nombre ciudad edad intereses role email")
     if (!user) {//si no existe
       handleHttpError(res, "USER_NOT_EXISTS",404)
       return
@@ -80,4 +64,4 @@ const userLogin = async (req,res) => {
 
 //crear comercio por el admin
 
-module.exports = {userLogin,userRegister,anonUser};
+module.exports = {userLogin,userRegister,};

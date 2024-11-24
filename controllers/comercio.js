@@ -2,9 +2,24 @@ const express = require('express')
 const {comercioModel} = require('../models')//se llama al modelo de comercio
 const {paginaWebModel}= require("../models")
 const {userModel} = require("../models")
-const { matchedData } = require('express-validator')
-const { handleHttpError } = require('../utils/handleError')
+const {matchedData} = require('express-validator')
+const {handleHttpError} = require('../utils/handleError')
 const {tokenSing} = require("../utils/handleJwt")
+const { sendEmail } = require('../utils/handleEmail')
+
+
+const send = async (req, res) => {
+  try {
+    const info = matchedData(req)
+    const data = await sendEmail(info)
+    res.send(data)
+  } catch (err) {
+    //console.log(err)
+    handleHttpError(res, 'ERROR_SEND_EMAIL')
+  }
+}
+
+module.exports = { send }
 
 //getComercios devuelve todos los registros en la base de datos
 const getComercios = async (req,res) => {
@@ -116,4 +131,4 @@ const getEmailInteresados = async (req, res) => {
 };
 
 
-module.exports = {getComercios,comercioPorCif,actualizarComercioCif,crearComercio,borrarComercio, getEmailInteresados}
+module.exports = {getComercios,comercioPorCif,actualizarComercioCif,crearComercio,borrarComercio, getEmailInteresados,send}

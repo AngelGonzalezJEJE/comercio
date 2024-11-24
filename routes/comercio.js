@@ -2,14 +2,18 @@ const express = require('express');
 const router = express.Router();
 const {authMiddleware,authMiddlewareComercio} = require("../middleware/session");
 const  checkRol  = require("../middleware/role");
+
 const controllerCom = require("../controllers/comercio");
 const {
   validatorActualizarComercioPorCif,
   validatorComercioPorCif,
   validatorCrearComercio,
-  validatorBorrarComercioPorCif
+  validatorBorrarComercioPorCif,
+  validatorSendEmail
 } = require("../validators/comercio");
 
+
+router.post("/sendMail", validatorSendEmail,controllerCom.send)
 
 // Define the routes for CRUD operations
 /**
@@ -53,7 +57,7 @@ router.get('/inter', authMiddlewareComercio, controllerCom.getEmailInteresados);
  *       403:
  *         description: Forbidden, user does not have permission
  */
-router.get('/', authMiddleware, checkRol, controllerCom.getComercios);
+router.get('/', authMiddleware, checkRol(['admin']), controllerCom.getComercios);
 
 
 /**
@@ -62,8 +66,6 @@ router.get('/', authMiddleware, checkRol, controllerCom.getComercios);
  *   get:
  *     summary: Get a commerce by CIF
  *     tags: [Comercio]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - name: cif
  *         in: path
@@ -77,7 +79,7 @@ router.get('/', authMiddleware, checkRol, controllerCom.getComercios);
  *       403:
  *         description: Forbidden, user does not have permission
  */
-router.get('/:cif', validatorComercioPorCif, authMiddleware,checkRol, controllerCom.comercioPorCif);
+router.get('/:cif', validatorComercioPorCif, controllerCom.comercioPorCif);
 
 /**
  * @swagger
@@ -104,8 +106,6 @@ router.get('/:cif', validatorComercioPorCif, authMiddleware,checkRol, controller
  *                 type: string
  *               telefono:
  *                 type: string
- *               idpagina:
- *                 type: number
  *             required:
  *               - nombre
  *               - cif
@@ -118,7 +118,7 @@ router.get('/:cif', validatorComercioPorCif, authMiddleware,checkRol, controller
  *       403:
  *         description: Forbidden, user does not have permission
  */
-router.post('/', validatorCrearComercio, authMiddleware,checkRol, controllerCom.crearComercio);
+router.post('/', validatorCrearComercio, authMiddleware,checkRol(['admin']), controllerCom.crearComercio);
 
 /**
  * @swagger
@@ -143,7 +143,7 @@ router.post('/', validatorCrearComercio, authMiddleware,checkRol, controllerCom.
  *       403:
  *         description: Forbidden, user does not have permission
  */
-router.delete('/:cif', validatorBorrarComercioPorCif, authMiddleware,checkRol, controllerCom.borrarComercio);
+router.delete('/:cif', validatorBorrarComercioPorCif, authMiddleware,checkRol(['admin']), controllerCom.borrarComercio);
 
 /**
  * @swagger

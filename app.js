@@ -30,6 +30,7 @@ morganBody(app, {
   },
   stream: loggerStream
 })
+module.exports= app
 
 const port = process.env.PORT || 3000;//se llama al puerto definido en .env, si no, sera 3000
 

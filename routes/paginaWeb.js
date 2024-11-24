@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const uploadMiddleware = require("../utils/handleStorage");
+const {uploadMiddleware,uploadMiddlewareMemory} = require("../utils/handleStorage");
 const { authMiddlewareComercio, authMiddleware } = require("../middleware/session");
 const checkRol  = require("../middleware/role");
 const pgwController = require("../controllers/paginaWeb");
@@ -11,8 +11,63 @@ const {
   validatorpaginaWebPorId,
   validatorCrearImagen
 } = require("../validators/paginaWeb");
-
-router.get("/" ,authMiddleware, pgwController.getAllWeb)
+/**
+ * @swagger
+ * /api/paginaWeb:
+ *   get:
+ *     summary: Retrieve a list of web pages.
+ *     description: Fetches a list of web pages filtered by optional query parameters such as `ciudad` and `actividad`, and sorted by scoring if specified.
+ *     tags:
+ *       - PaginaWeb
+ *     parameters:
+ *       - in: query
+ *         name: ciudad
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Filter by city.
+ *       - in: query
+ *         name: actividad
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Filter by activity.
+ *       - in: query
+ *         name: scoring
+ *         schema:
+ *           type: string
+ *           enum: [true, false]
+ *         required: false
+ *         description: If `true`, sorts the results by scoring in descending order.
+ *     responses:
+ *       200:
+ *         description: A JSON array of web pages.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: The ID of the web page.
+ *                   ciudad:
+ *                     type: string
+ *                     description: The city of the web page.
+ *                   actividad:
+ *                     type: string
+ *                     description: The activity related to the web page.
+ *                   reseñas:
+ *                     type: object
+ *                     properties:
+ *                       scoring:
+ *                         type: number
+ *                         description: The scoring of the web page.
+ *       500:
+ *         description: Internal server error.
+ */
+router.get("/" , pgwController.getAllWeb)
 
 
 /**
@@ -36,7 +91,7 @@ router.get("/" ,authMiddleware, pgwController.getAllWeb)
  *       403:
  *         description: Forbidden, user does not have permission
  */
-router.get('/:id', validatorpaginaWebPorId, authMiddleware, checkRol, pgwController.paginaWebPorId);
+router.get('/:id', validatorpaginaWebPorId, authMiddleware, checkRol(["user","admin"]), pgwController.paginaWebPorId);
 
 /**
  * @swagger
@@ -202,6 +257,7 @@ router.put('/:id', validatorModificarPaginaWeb, authMiddlewareComercio, pgwContr
  *         description: Internal server error
  */
 router.patch('/img', validatorCrearImagen, authMiddlewareComercio, uploadMiddleware.single('image'), pgwController.crearImagen);
+//router.patch('/logo', validatorCrearImagen, authMiddlewareComercio, uploadMiddlewareMemory.single('image'), pgwController.updateImage);
 
 
 module.exports = router;

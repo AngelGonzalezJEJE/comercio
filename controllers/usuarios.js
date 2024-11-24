@@ -1,5 +1,6 @@
 const express = require("express")
 const userModel = require("../models/NoSql/usuarios")
+const {paginaWebModel}= require("../models")
 const {matchedData} = require("express-validator")
 const {handleHttpError} = require("../utils/handleError")
 const {tokenSing} = require("../utils/handleJwt")
@@ -13,7 +14,7 @@ const getUsuarios = async (req,res) => {
       res.json(data)
   }
   catch{
-    handleHttpError(res, "ERROR_GET_USERS]", 500)
+    handleHttpError(res, "ERROR_GET_USERS", 500)
   }
 };
 //retorna a usuario por su id como parametro
@@ -55,16 +56,29 @@ catch (error) {
 };
 
 //actualiza a un usuario por su id 
-const actualizarUsuario = async (req,res) => {
-  const {id} = matchedData(req)
-  try{
-  const data = await userModel.findOneAndUpdate({_id:id})
-  res.send(data)
-  }
-  catch(error){
-  handleHttpError(res,"ERROR_UPDATE_USER")
+const actualizarUsuario = async (req, res) => {
+    
+  try {
+    // Update user data by ID
+    const  id  = req.params.id;  
+    const updateData = req.body;  
+    const data = await userModel.findByIdAndUpdate(
+      id,                        // Pass the ID directly
+      updateData,                // Update with data from request body
+      { new: true }              // Return the updated document
+    );
+
+    if (!data) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    res.send(data);               // Send the updated user data
+  } catch (error) {
+    console.error("Error updating user:", error);
+    handleHttpError(res, "ERROR_UPDATE_USER"); // Handle error response
   }
 };
+
 
 
 //borrar a un usuario (por defecto soft delete, ?physical=true para Hard delete)
@@ -88,7 +102,55 @@ const deleteUsuario = async (req,res) => {
   }
 };
 
-module.exports={crearUsuario,deleteUsuario,actualizarUsuario,getUsuario,getUsuarios}
+const rateWebSite = async (req, res) => {
+  const user = req.user;
+  const pageid = req.params.id;
+  const { rating, comentario } = req.body;
+
+  try {
+    const page = await paginaWebModel.findById(pageid);
+
+    if (!page) {
+      handleHttpError(res, "ERROR_PAGE_NOT_FOUND", 404);
+      return;
+    }
+
+    // Find if the user has already rated this page
+    const userIndex = page.reseñas.ratings.findIndex(r => r.userId.toString() === user._id.toString());
+
+    if (userIndex !== -1) {
+      // If the user has already rated, update the rating and comment
+      page.reseñas.ratings[userIndex].rating = rating; // Update the rating
+      page.reseñas.ratings[userIndex].userName = user.nombre; // Update the userName (optional)
+
+      // Update the comment at the same index in the comentarios array
+      page.reseñas.comentarios[userIndex].comentario = comentario; // Update only the comment text
+      page.reseñas.comentarios[userIndex].userName = user.nombre; // Update the userName (optional)
+    } else {
+      // If the user hasn't rated yet, add a new rating and comment
+      page.reseñas.ratings.push({ rating, userName: user.nombre, userId: user._id });
+      page.reseñas.comentarios.push({ comentario, userName: user.nombre, userId: user._id });
+    }
+
+    // Recalculate the scoring (assuming you have this method in your model)
+    page.calculateScoring();
+
+    // Save the updated page
+    await page.save();
+
+    // Send the response
+    res.json({
+      message: "Rating added successfully",
+      page,
+    });
+  } catch (error) {
+    console.error(error);
+    handleHttpError(res, "ERROR_RATING", 500);
+  }
+};
+
+
+module.exports={crearUsuario,deleteUsuario,actualizarUsuario,getUsuario,getUsuarios, rateWebSite}
 
 
 

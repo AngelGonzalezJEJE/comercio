@@ -6,31 +6,34 @@ const {userModel} = require("../models")
 
 //con este middleware compruebo si el usuario es admin se le de paso
 //si es user, el parametro debe ser su propia id para que que se le de paso
-const checkRol = async (req, res, next) => { // Doble argumento
+const checkRol = (allowedRoles) => async (req, res, next) => {
   try {
+    // Verify the user's ID and retrieve user information
+    const userId = await checkToken(req, res);
+    const user = await userModel.findById(userId);
+    const queryId = req.params.id;
 
-    if (req.user.anon === true){
-      console.log(req.user)
-      userRol = req.user.role
-
+    if (!user) {
+      handleHttpError(res, "USER_NOT_FOUND", 404);
+      return;
     }
-    else{
-      const userId = await  checkToken(req,res)
-      const user = await userModel.findById(userId)
-      const queryId = req.params.id
 
-      const userRol = user.role
-      const checkValueRol = userRol === "admin" || (userRol ==="user" && userId === queryId);
-      if (!checkValueRol) {
-          handleHttpError(res, "NOT_ALLOWED", 403)
-          return
-      }
+    const userRole = user.role;
+
+    // Check if the user has a matching role or if they are the same user based on `queryId`
+    const hasPermission =
+      allowedRoles.includes(userRole) && (userRole === "admin" || userId === queryId);
+
+    if (!hasPermission) {
+      handleHttpError(res, "NOT_ALLOWED", 403);
+      return;
     }
-      next()
+
+    next();
   } catch (err) {
-    console.log(err)
-      handleHttpError(res, "ERROR_PERMISSIONSROL", 403)
+    console.error(err);
+    handleHttpError(res, "ERROR_PERMISSIONSROL", 403);
   }
 };
 
-module.exports= checkRol
+module.exports = checkRol;

@@ -10,3 +10,42 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/api/paginaWeb
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzIxNDg3M2MwMjI0ODFlMjc3MzcxMzMiLCJpYXQiOjE3MzEzNTE1NjAsImV4cCI6MTc2Mjg4NzU2MH0.eHL2ew0kwcSgiRjObM8_b59wmInte8NKPHGs8Yc2CJo
+
+###
+GET http://localhost:3000/api/usuarios
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzJjZjZkMGQ1NjkzNWZhMDIzZjM3OTYiLCJpYXQiOjE3MzE4Njc5ODksImV4cCI6MTc2MzQwMzk4OX0.T9qrSiEyjLgGaeYCVkbckivrpxJrP_KiKqdD9I65KaQ
+
+###
+PATCH http://localhost:3000/api/usuarios/rate/673377c6abb507ce4bfb1ce9
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzNjYTJlZmUwZGM4YWYyZTk2NzBjYTYiLCJpYXQiOjE3MzIzNzMxOTUsImV4cCI6MTc2MzkwOTE5NX0.51PIr59vMXQER4_Y5YDIXGmP724ffqtU-MLXugW-IRo
+
+{
+  "rating": 4, 
+  "comentario": "This site is awesome, but could use some improvements."
+}
+
+###
+PUT http://localhost:3000/api/usuarios/67214873c022481e27737133
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzIxNDg3M2MwMjI0ODFlMjc3MzcxMzMiLCJpYXQiOjE3MzIwMTAxMzYsImV4cCI6MTc2MzU0NjEzNn0.iBynpqFhJaBPjKkrqBZngG9iyzVom3sapXY2SMyMqeI
+
+{"nombre": "Angeliyo", 
+"ciudad": "margarita", 
+"edad": 72}
+
+###
+GET http://localhost:3000/api/usuarios/67214873c022481e27737133
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzIxNDg3M2MwMjI0ODFlMjc3MzcxMzMiLCJpYXQiOjE3MzIwMTAxMzYsImV4cCI6MTc2MzU0NjEzNn0.iBynpqFhJaBPjKkrqBZngG9iyzVom3sapXY2SMyMqeI
+
+
+###
+POST http://localhost:3000/api/comercio/sendMail
+Content-Type: application/json
+Authorization: Bearer 1//04MDxe8W8SgqUCgYIARAAGAQSNwF-L9IrmARUJKgF1FOOAoK8TFlhbWCgrnYEpwExAYs6RPvQnaa5gH5NEz5KStL0F-GRJOuOqfw
+
+{
+  "subject":"sexy",
+  "text":"sexy",
+  "to":"angel.dpsmsz@gmail.com"
+}

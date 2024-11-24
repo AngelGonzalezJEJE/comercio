@@ -12,7 +12,6 @@ const validatorCrearComercio = [
     check('direccion').exists().notEmpty(),
     check('email').exists().notEmpty(),
     check('telefono').exists().notEmpty().optional(),
-    check('idpagina').exists().notEmpty(),
   (req, res, next) => validateResults(req, res, next)
 ];
 
@@ -30,4 +29,11 @@ const validatorBorrarComercioPorCif =[
   (req,res,next) => validateResults(req,res,next)
 ];
 
-module.exports = {validatorActualizarComercioPorCif,validatorComercioPorCif,validatorCrearComercio,validatorBorrarComercioPorCif}
+const validatorSendEmail = [
+  check("subject").exists().notEmpty(),
+  check("text").exists().notEmpty(),
+  check("to").exists().notEmpty(),
+  (req, res, next) => validateResults(req,res,next)
+];
+
+module.exports = {validatorActualizarComercioPorCif,validatorComercioPorCif,validatorCrearComercio,validatorBorrarComercioPorCif, validatorSendEmail}

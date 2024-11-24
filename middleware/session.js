@@ -8,41 +8,39 @@ const { paginaWebModel } = require("../models");
 // middleware de autenticación para usuarios
 const authMiddleware = async (req, res, next) => {
   try {
-    // verifica si existe la cabecera de autorización
+    // Check if the authorization header exists
     if (!req.headers.authorization) {
-      handleHttpError(res, "NOT_TOKEN", 401); // maneja el error si no hay token
+      handleHttpError(res, "NOT_TOKEN", 401);
       return;
     }
-   
-    const token = req.headers.authorization?.split(" ")[1]
-    const tokenData = verifyToken(token)
-    console.log(tokenData)
+    const token = req.headers.authorization.split(" ")[1];
+    const tokenData = verifyToken(token);
 
-    if(tokenData){
-      req.user = { anon: true, ciudad: tokenData.ciudad, intereses: tokenData.intereses, role:tokenData.role }
-    
+    if (tokenData?._id) {
+      // Registered user: Fetch user details by ID
+      const user = await userModel.findById(tokenData._id);
+      if (!user) {
+        handleHttpError(res, "USER_NOT_FOUND", 404);
+        return;
+      }
+      req.user = user;
+    } else {
+      // Anonymous user: Assign anon data from tokenData
+      req.user = {
+        anon: true,
+        intereses: tokenData.intereses || [],
+        ciudad: tokenData.ciudad || null,
+        role: tokenData.role || "guest",
+      };
     }
-    
-    else{
-    const userId = await checkToken(req, res);
-    
-    // verifica si se obtuvo el id del token
-    if (!userId) {
-      handleHttpError(res, "ERROR_ID_TOKEN"); // maneja el error si no se pudo obtener el id
-      return;
-    }
 
-    // busca el usuario en la base de datos por su id
-    const user = await userModel.findById(userId);
-    req.user = user; // asigna el usuario encontrado al objeto de solicitud
-  }
-
-    next(); // llama al siguiente middleware o manejador de ruta
+    next(); // Proceed to the next middleware or route handler
   } catch (err) {
-    console.error(err)
-    handleHttpError(res, "NOT_SESSION", 401); // maneja errores de sesión
+    console.error(err);
+    handleHttpError(res, "NOT_SESSION", 401);
   }
 };
+
 
 // middleware que comprueba que el cif del token del comercio sea el mismo que el de la página web requerida
 const authMiddlewareComercio = async (req, res, next) => {

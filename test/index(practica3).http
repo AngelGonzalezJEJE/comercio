@@ -65,21 +65,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzIyN2FiM
 ### crear un comercio por ADMIN
 POST http://localhost:3000/api/comercio
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzIxNDg3M2MwMjI0ODFlMjc3MzcxMzMiLCJpYXQiOjE3MzE0MjYxNzQsImV4cCI6MTc2Mjk2MjE3NH0.ro-q6TZ0s9rtMRIsjyzafiIJ3rlbTXdkizuBH_-onlA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzNjYTJlZmUwZGM4YWYyZTk2NzBjYTYiLCJpYXQiOjE3MzI0NTI2MDMsImV4cCI6MTc2Mzk4ODYwM30.1_Ef99vP8je25CwtGmADX0sjX24683LmvKSwVQ1nFGA
 
 {
   "nombre": "Don Barbaro",
   "cif": "2368CIF",
   "direccion": "Pampatar",
   "email": "donn@xxx.com",
-  "telefono": "123456789",
-  "idpagina":123
+  "telefono": "123456789"
 }
 
 ### Creacion de una pagina web
 POST http://localhost:3000/api/paginaWeb HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMzN2VjY2FiYjUwN2NlNGJmYjFkNjIiLCJpYXQiOjE3MzE0MjgwNDUsImV4cCI6MTc2Mjk2NDA0NX0.F3hqAH5_o6qu596HeEjm7blgTukmoK8gjRczzB0bTAM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzQzMjExNDRmNjAzZmRhZTZmOTg0M2EiLCJpYXQiOjE3MzI0NTI2MjgsImV4cCI6MTc2Mzk4ODYyOH0.ZX3NDh9V7kbXKFdP-GoNQ_hpQtmKCb3WlycEdrgMwN8
 
 {
   "ciudad": "Margarita",
@@ -89,19 +88,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMzN2VjY
   "textos": [
     "Margarita best cafe in margarita",
     "It is known for its cultural and artistic heritage."
-  ],
-  "imagenes": [
-    "https://example.com/images/madrid1.jpg",
-    "https://example.com/images/madrid2.jpg"
-  ],
-  "reseñas": {
-    "scoring": 10,
-    "totalPuntuaciones": 150,
-    "comentarios": [
-      "Amazing experience!",
-      "A must-see when visiting Margarita."
-    ]
-  }
+  ]
 }
 ### Actualizacion de una pagina web por su id
 PUT http://localhost:3000/api/paginaWeb/6720b21b76c538b1c3b6000b HTTP/1.1

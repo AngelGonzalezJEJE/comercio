@@ -5,6 +5,7 @@ const {userModel} = require("../models")
 const { matchedData } = require('express-validator')
 const { handleHttpError } = require('../utils/handleError')
 const {checkToken} = require("../utils/handleJwt")
+const uploadToPinata = require("../utils/handleUploadIpfs")
 
 const fs = require("fs")
 
@@ -29,7 +30,6 @@ const getAllWeb = async (req,res) => {
     handleHttpError(res, "ERROR_GET_USERS]", 500)
   }
 };
-
 
 //se obtiene la pagina web por el id en el parametro, si hay algun error lo devuelve
 const paginaWebPorId = async (req,res) => {
@@ -64,7 +64,6 @@ const crearPaginaWeb = async (req,res) => {
   }
 };
 
-
 //modifica una pagina web por su id
 const modificarPaginaWeb = async (req, res) => {
   try {
@@ -96,7 +95,7 @@ const borrarPaginaWeb = async (req,res) => {
   }
   catch (error){
     console.log(error)
-    rehandleHttpError(res, 'ERROR_DELETE_PAGE', 500)//error interno
+    handleHttpError(res, 'ERROR_DELETE_PAGE', 500)//error interno
   }
 };
 

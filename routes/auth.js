@@ -1,5 +1,5 @@
 const express = require("express");
-const { userLogin, userRegister, anonUser } = require("../controllers/auth");
+const { userLogin, userRegister } = require("../controllers/auth");
 const { validatorUserLogin, validatorUserRegister, validatorAnonUser } = require("../validators/auth");
 const router = express.Router();
 
@@ -46,8 +46,6 @@ const router = express.Router();
  *         description: Server error
  */
 router.post('/register', validatorUserRegister, userRegister);
-
-router.post('/register/anon', validatorAnonUser, anonUser)
 
 /**
  * @swagger
