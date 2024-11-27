@@ -35,10 +35,10 @@ Content-Type: application/json
 
 {
   "ciudad": "Caracas",
-  "actividad": "Prostitution"
+  "actividad": "Tourism"
 }
 ### Sube una imagen al docuemento y la almacena en el servidor / storage
-PUT http://localhost:3000/api/paginaWeb/img/6718001c023e86cd984ebd7a
+PATCH http://localhost:3000/api/paginaWeb/img/6718001c023e86cd984ebd7a
 Content-Type: multipart/form-data; boundary=Boundry
 
 --Boundry
@@ -52,3 +52,10 @@ DELETE  http://localhost:3000/api/paginaWeb/6718001c023e86cd984ebd7a
 
 ### Borra un docuemnto de pagina Web HArd Delete
 DELETE http://localhost:3000/api/paginaWeb/6718001c023e86cd984ebd7a?physical=true
+
+###
+DELETE  http://localhost:3000/api/comercio/asasCIF?physical=true
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzNjYTJlZmUwZGM4YWYyZTk2NzBjYTYiLCJpYXQiOjE3MzI1NDM3NTAsImV4cCI6MTc2NDA3OTc1MH0.TJxX4auh5cxRVkYj-YzLB8tiEcJwXtbBlDtjBTv8_fo
+
+

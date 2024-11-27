@@ -1,6 +1,6 @@
 const express = require("express");
-const { userLogin, userRegister } = require("../controllers/auth");
-const { validatorUserLogin, validatorUserRegister, validatorAnonUser } = require("../validators/auth");
+const { userLogin, userRegister,authCommerceToken } = require("../controllers/auth");
+const { validatorUserLogin, validatorUserRegister, validatorAuthToken} = require("../validators/auth");
 const router = express.Router();
 
 /**
@@ -78,5 +78,7 @@ router.post('/register', validatorUserRegister, userRegister);
  *         description: Server error
  */
 router.post("/login", validatorUserLogin, userLogin);
+
+router.post("/commerce", validatorAuthToken,authCommerceToken);
 
 module.exports = router;

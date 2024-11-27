@@ -81,49 +81,6 @@ router.get("/", authMiddleware,checkRol(["admin"]), getUsuarios);
  */
 router.get("/:id", validatorGetUsuario,checkRol(['admin']), getUsuario);
 
-/**
- * @swagger
- * /api/usuarios:
- *   post:
- *     summary: Create a new user (use this for creating an admin user)
- *     tags: [Usuarios]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               nombre:
- *                 type: string
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *               edad:
- *                 type: number
- *               ciudad:
- *                 type: string
- *               intereses:
- *                 type: array
- *                 items:
- *                   type: string
- *               role:
- *                 type: string
- *                 enum: ['user', 'admin']  # Must be either 'user' or 'admin'
- *             required:
- *               - nombre
- *               - email
- *               - password
- *               - edad
- *               - ciudad
- *               - role
- *     responses:
- *       201:
- *         description: User created successfully
- *       400:
- *         description: Invalid input
- */
 router.post("/", validatorCrearUsuario, crearUsuario);//only used once to create an admin user 
 
 /**

@@ -3,7 +3,7 @@ const {validateResults} = require("../utils/handleValidators")
 
 //validador de get oagina web por id, valida el id de mongo db
 const validatorpaginaWebPorId = [
-  check("id").exists().notEmpty().isMongoId(),
+  check("cif").exists().notEmpty(),
   (req, res, next) => validateResults(req, res, next)
 ];
 
@@ -31,7 +31,7 @@ const validatorModificarPaginaWeb = [
 
 //valida id
 const validatorBorrarPaginaWeb =[
-  check("id").exists().notEmpty().isMongoId(),
+  check("cif").exists().notEmpty(),
   (req,res,next) => validateResults(req,res,next)
 ];
 

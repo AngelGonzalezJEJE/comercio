@@ -1,6 +1,6 @@
 const express = require("express")
 const {handleHttpError} = require("../utils/handleError")
-const {tokenSing,tokenAnon} = require("../utils/handleJwt")
+const {tokenSing,verifyToken} = require("../utils/handleJwt")
 const { encrypt, compare} = require("../utils/handlePassword")
 const {matchedData}= require("express-validator")
 const {userModel} = require("../models")
@@ -60,8 +60,17 @@ const userLogin = async (req,res) => {
   }
 };
 
+const authCommerceToken = async (req,res) => {
 
+  const {token} = matchedData(req)
+  try{
 
-//crear comercio por el admin
+    const commerceToken = verifyToken(token)
+    res.send(commerceToken)
 
-module.exports = {userLogin,userRegister,};
+  }
+  catch(error){
+    console.error(error)
+  }
+};
+module.exports = {userLogin,userRegister,authCommerceToken};

@@ -1,0 +1,26 @@
+GET http://localhost:3000/api/paginaWeb/
+
+
+
+###
+GET http://localhost:3000/api/paginaWeb?scoring=true
+
+###
+PUT http://localhost:3000/api/usuarios/67448fe408fb721d237e06c4
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzQ0OGZlNDA4ZmI3MjFkMjM3ZTA2YzQiLCJpYXQiOjE3MzI1NDY1OTQsImV4cCI6MTc2NDA4MjU5NH0.r2cRttZGzmJ786JzurRuQ1tJH008MehG6JViJj3F_rI
+
+{
+  "nombre":"saodhqu"
+}
+###
+DELETE http://localhost:3000/api/usuarios/67448fe408fb721d237e06c4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzQ0OGZlNDA4ZmI3MjFkMjM3ZTA2YzQiLCJpYXQiOjE3MzI1NDcxMDcsImV4cCI6MTc2NDA4MzEwN30.Ci-A-1LSWQZix0fpCY4HNAwcvvprxHujcYLqFoYK9MQ
+
+###
+POST http://localhost:3000/api/auth/commerce
+Content-Type: application/json
+
+{
+  "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzQ2MzE3YzY1MWIyMTZhZWYxYjBkNWEiLCJjaWYiOiJoIiwiaWF0IjoxNzMyNjUzNDM2LCJleHAiOjE3NjQxODk0MzZ9.DBy_iFrTtotw0ORiWm_aGx325Rs3UPnCVpPVuYsIwF8"
+}

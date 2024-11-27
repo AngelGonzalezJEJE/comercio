@@ -23,13 +23,8 @@ const validatorUserRegister =[
   }
 ]
 
-const validatorAnonUser = [
-  check("intereses").exists().notEmpty(),
-  check("ciudad").exists().notEmpty(),
-  check("permiteRecibirOfertas").exists().notEmpty().optional(),
-  (req,res,next) => {
-    return validateResults(req,res,next)
-  }
+const validatorAuthToken = [ 
+  check('token').exists().notEmpty()
 ]
 
-module.exports = {validatorUserLogin,validatorUserRegister,validatorAnonUser}
+module.exports = {validatorUserLogin,validatorUserRegister,validatorAuthToken}

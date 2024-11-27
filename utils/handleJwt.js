@@ -12,10 +12,19 @@ const tokenSing = (data) => {
   return sing
 };
 
-const tokenAnon = (data) => {
-  const token = jwt.sign(data,JWT,{expiresIn:"24h"})
-  return token
-}
+
+const tokenSingCommerce = (data) => {
+  const sing = jwt.sign( //payload
+    {_id:data._id,
+      cif:data.cif,
+    }, //solo paso el id del objeto, el resto lo manejo en la propia funcion
+    JWT,
+    {expiresIn:"365d"}//uso este sing para todos 
+  )
+  
+  return sing
+};
+
 
 const verifyToken = (tokenJwt) => {
   try{
@@ -39,9 +48,9 @@ const checkToken = async (req,res,next) => {
   catch(error){
     console.log(error)
     handleHttpError(res,"ERROR")
-  }
+  } 
 };
 
 
 
-module.exports = {tokenSing,verifyToken, checkToken, tokenAnon}
+module.exports = {tokenSing,verifyToken, checkToken,tokenSingCommerce}

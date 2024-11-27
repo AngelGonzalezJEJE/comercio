@@ -187,7 +187,7 @@ router.delete('/:cif', validatorBorrarComercioPorCif, authMiddleware,checkRol(['
  *       403:
  *         description: Forbidden, user does not have permission
  */
-router.put('/:cif', validatorActualizarComercioPorCif, authMiddleware,checkRol, controllerCom.actualizarComercioCif);
+router.put('/:cif', validatorActualizarComercioPorCif, authMiddleware,checkRol(['admin']), controllerCom.actualizarComercioCif);
 
 
 

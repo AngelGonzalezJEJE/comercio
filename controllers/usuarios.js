@@ -1,6 +1,5 @@
 const express = require("express")
-const userModel = require("../models/NoSql/usuarios")
-const {paginaWebModel}= require("../models")
+const {paginaWebModel,comercioModel,userModel}= require("../models")
 const {matchedData} = require("express-validator")
 const {handleHttpError} = require("../utils/handleError")
 const {tokenSing} = require("../utils/handleJwt")

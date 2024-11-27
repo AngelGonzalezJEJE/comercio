@@ -20,7 +20,6 @@ const validatorActualizarComercioPorCif = [
   check('direccion').exists().notEmpty().optional(),
   check('email').exists().notEmpty().optional(),
   check('telefono').exists().notEmpty().optional(),
-  check('idpagina').exists().notEmpty().optional(),
 (req, res, next) => validateResults(req, res, next)
 ];
 

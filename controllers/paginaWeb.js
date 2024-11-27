@@ -33,9 +33,9 @@ const getAllWeb = async (req,res) => {
 
 //se obtiene la pagina web por el id en el parametro, si hay algun error lo devuelve
 const paginaWebPorId = async (req,res) => {
-  const id = req.params.id // se toma el id de la url y se valida con mached data
+  const cif = req.params.cif // se toma el id de la url y se valida con mached data
   try{
-    const data = await paginaWebModel.findById(id) // se busca el documento por su id
+    const data = await paginaWebModel.findOne({ cif: cif}) // se busca el documento por su id
     if (!data) {
       return res.status(404).json({ message: "Pagina web no encontrada" }); // si no se encuentra 
     }
@@ -67,9 +67,13 @@ const crearPaginaWeb = async (req,res) => {
 //modifica una pagina web por su id
 const modificarPaginaWeb = async (req, res) => {
   try {
-    const id = req.params.id;//se toma el id de la solicitud
+    const cif = req.params.cif;//se toma el id de la solicitud
     const body = matchedData(req);//se toman y se validan todos los campos de la solicitud (body)
-    const data = await paginaWebModel.findByIdAndUpdate(id, body, { new: true });//si todo es correcto se busca el documento por su id y se actualiza 
+    const data = await paginaWebModel.findOneAndUpdate(
+      { cif: cif }, // Filter by CIF
+      req.body, // Update data from the request body
+      { new: true } // Return the updated document
+    );//si todo es correcto se busca el documento por su id y se actualiza 
     if (!data) {
       return res.status(404).json({ message: "pagina web no encontrada" });//si no existe
     }
@@ -81,15 +85,15 @@ const modificarPaginaWeb = async (req, res) => {
 
 //borra un documento de la base de datos por si concicde con el cif del comercio
 const borrarPaginaWeb = async (req,res) => {
-  const {id} =  matchedData(req)//se toma y se valida la id de la solicitud
+  const {cif} =  matchedData(req)//se toma y se valida la id de la solicitud
   try{
     let data;
     if (req.query.physical ==="true"){//physical indica si la eliminacion es fisica (Hard Delete)
-      const data = await paginaWebModel.deleteOne({_id:id})//deleteOne borra el documento permanentemente si ?physical=true
+      const data = await paginaWebModel.deleteOne({cif:cif})//deleteOne borra el documento permanentemente si ?physical=true
       res.json({menasje:"pagina web eliminada permanentemente"})//confirmacion de eliminacion
     }
     else {//por defecto se marcan los documentos como eliminados pero no se borran definitivamente de la base de datos(soft delete)
-      const data = await paginaWebModel.delete({_id:id})
+      const data = await paginaWebModel.delete({cif:cif})
       res.json({menasje:"pagina web eliminada"})//confirmacion de eliminacion
     }
   }

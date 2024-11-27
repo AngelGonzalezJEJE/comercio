@@ -1,10 +1,8 @@
 const express = require('express')
-const {comercioModel} = require('../models')//se llama al modelo de comercio
-const {paginaWebModel}= require("../models")
-const {userModel} = require("../models")
+const {paginaWebModel,comercioModel,userModel}= require("../models")
 const {matchedData} = require('express-validator')
 const {handleHttpError} = require('../utils/handleError')
-const {tokenSing} = require("../utils/handleJwt")
+const {tokenSing,tokenSingCommerce} = require("../utils/handleJwt")
 const { sendEmail } = require('../utils/handleEmail')
 
 
@@ -53,7 +51,7 @@ const crearComercio = async (req,res) => {
     try {
         const nuevoComercio = await comercioModel.create(body); // Guardar el comercio
         const data = {
-          token: tokenSing(nuevoComercio),
+          token: tokenSingCommerce(nuevoComercio),
           nuevoComercio
         }
         res.send(data); // Devolver el comercio creado
@@ -66,22 +64,29 @@ const crearComercio = async (req,res) => {
 
 
   //actualizar un comercio en la base de datos por su CIF
-const actualizarComercioCif  = async (req,res) => {
-    const {cif} = matchedData(req)
-  try{
-    const comeract = await comercioModel.findOneAndUpdate({cif:cif}, req.body, {new:true})//encuetra el registro con el cif y lo actualiza
-    if (comeract){
-        res.json(comeract) //se actualiza el registro con los datos del body si existe.
+  const actualizarComercioCif = async (req, res) => {
+    const cif  = req.params.cif; // CIF extracted from request URL or params
+    try {
+      // Try to update the comercio document with the new data from req.body
+      const comeract = await comercioModel.findOneAndUpdate(
+        { cif: cif }, // Filter by CIF
+        req.body, // Update data from the request body
+        { new: true } // Return the updated document
+      );
+  
+      if (comeract) {
+        // If a matching document is found and updated, return the updated document
+        res.json(comeract);
+      } else {
+        // If no document is found with that CIF, return a 404 with a message
+        res.status(404).json({ mensaje: 'Comercio no encontrado' });
+      }
+    } catch (error) {
+      // In case of an error, handle it properly
+      console.error(error); // Log the error for debugging
+      handleHttpError(res, 'ERROR_UPDATE_ITEM', 500); // Return 500 Internal Server Error
     }
-    else {
-        res.json({ mensaje: 'comercio no encontrado' }) //si no se encuentra
-
-    }
-  }  catch (error) {
-    handleHttpError(res, 'ERROR_UPDATE_ITEM', 500); //error iterno
-  }
-
-}
+  };
 //Borra registro de la base de datos por cif 
 const borrarComercio = async (req,res) => {
     const {cif} = matchedData(req)

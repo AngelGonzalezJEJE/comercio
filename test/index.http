@@ -8,7 +8,7 @@ Content-Type: application/json
   "direccion": "czll",
   "email": "ddddd@zzzz.com",
   "telefono": "123456789",
-  "idpagina":2112
+  
 }
 ### creo otro comercio
 POST http://localhost:3000/api/comercio

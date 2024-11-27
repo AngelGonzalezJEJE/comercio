@@ -72,7 +72,7 @@ router.get("/" , pgwController.getAllWeb)
 
 /**
  * @swagger
- * /api/paginaWeb/{id}:
+ * /api/paginaWeb/{cif}:
  *   get:
  *     summary: Get a specific web page by ID
  *     tags: [PaginaWeb]
@@ -91,7 +91,7 @@ router.get("/" , pgwController.getAllWeb)
  *       403:
  *         description: Forbidden, user does not have permission
  */
-router.get('/:id', validatorpaginaWebPorId, authMiddleware, checkRol(["user","admin"]), pgwController.paginaWebPorId);
+router.get('/:cif', validatorpaginaWebPorId, pgwController.paginaWebPorId);
 
 /**
  * @swagger
@@ -153,11 +153,11 @@ router.post('/', validatorcrearPaginaWeb, authMiddlewareComercio, pgwController.
  *       403:
  *         description: Forbidden, user does not have permission
  */
-router.delete('/:id', validatorBorrarPaginaWeb, authMiddlewareComercio, pgwController.borrarPaginaWeb);
+router.delete('/:cif', validatorBorrarPaginaWeb, authMiddlewareComercio, pgwController.borrarPaginaWeb);
 
 /**
  * @swagger
- * /api/paginaWeb/{id}:
+ * /api/paginaWeb/{cif}:
  *   put:
  *     summary: Update a web page by ID
  *     tags: [PaginaWeb]
@@ -201,7 +201,7 @@ router.delete('/:id', validatorBorrarPaginaWeb, authMiddlewareComercio, pgwContr
  *         description: Forbidden, user does not have permission
  */
 
-router.put('/:id', validatorModificarPaginaWeb, authMiddlewareComercio, pgwController.modificarPaginaWeb);
+router.put('/:cif', validatorModificarPaginaWeb, authMiddlewareComercio, pgwController.modificarPaginaWeb);
 
 /**
  * @swagger
